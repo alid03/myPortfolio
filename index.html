@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ali Dabdoub — Software Engineer</title>
+  <title>Ali Dabdoub | Software Engineer</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%234178E0'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='800' font-size='13' fill='white'>AD</text></svg>" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -807,10 +810,42 @@
       nav ul { gap: 1.25rem; }
       nav ul li:nth-child(2), nav ul li:nth-child(3) { display: none; }
     }
+
+    /* ── TOUCH / MOBILE ── */
+    @media (hover: none) {
+      body, a, button { cursor: auto; }
+      #cursor-dot, #cursor-ring, #cursor-glow { display: none; }
+    }
+
+    /* ── MOBILE TOAST ── */
+    #mobile-toast {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      white-space: nowrap;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    @media (hover: none) {
+      #mobile-toast { display: block; }
+    }
   </style>
 </head>
 <body>
 
+<div id="mobile-toast">Best experienced on desktop</div>
 <div id="cursor-glow"></div>
 <div id="cursor-ring"></div>
 <div id="cursor-dot"></div>
@@ -838,7 +873,7 @@
   <p class="hero-desc">
     B.S. Software Engineering, <strong>Magna Cum Laude</strong>, KSU '25.
     Starting M.S. CS at <strong>Georgia Tech</strong>, Fall 2026.
-    I build real things — from QA engineering to live client websites.
+    I enjoy building things, from test cases to live websites.
   </p>
   <div class="hero-ctas">
     <a href="#projects" class="btn btn-primary magnetic">View Projects</a>
@@ -855,7 +890,7 @@
   <div class="section-label">About</div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <h2>Software engineer<br>that actually ships.</h2>
+      <h2>Aspiring software engineer interested in building tools that make people's lives easier.</h2>
       <p>
         I'm Ali — based in Kennesaw, GA. Graduated from KSU in December 2025 with a B.S. in Software Engineering and a Minor in CS, <strong>Magna Cum Laude</strong>, 3.81 GPA. Starting a <strong>M.S. in Computer Science at Georgia Tech</strong> in Fall 2026.
       </p>
@@ -1336,6 +1371,13 @@
       if (!isActive) item.classList.add('active');
     });
   });
+
+  /* ── MOBILE TOAST ── */
+  const toast = document.getElementById('mobile-toast');
+  if (toast && window.matchMedia('(hover: none)').matches) {
+    setTimeout(() => { toast.style.opacity = '1'; }, 800);
+    setTimeout(() => { toast.style.opacity = '0'; }, 4000);
+  }
 </script>
 </body>
 </html>
