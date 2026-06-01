@@ -1290,6 +1290,18 @@
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 50);
   window.addEventListener('scroll', onScroll, { passive: true });
 
+  /* ── CLEAN URLs (no hash in address bar) ── */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.replaceState(null, '', location.pathname);
+      }
+    });
+  });
+
   /* ── HERO PARALLAX ── */
   const heroEl   = document.getElementById('hero');
   const heroName = document.getElementById('heroName');
