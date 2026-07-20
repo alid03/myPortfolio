@@ -1238,27 +1238,21 @@
     }
   }
 
-  function isMouseOverSplatter() {
-    return splatPositions.some(splat => {
-      const distX = mouseX - splat.x;
-      const distY = mouseY - splat.y;
-      const distance = Math.sqrt(distX * distX + distY * distY);
-      return distance < splat.radius * 1.3;
-    });
-  }
-
   heroSection.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 
-    if (isMouseOverSplatter()) {
-      const centerX = canvas.width * 0.75;
-      const centerY = canvas.height * 0.5;
-      const distX = mouseX - centerX;
-      const distY = mouseY - centerY;
-      const angle = Math.atan2(distY, distX);
+    const baseCenterX = canvas.width * 0.75;
+    const baseCenterY = canvas.height * 0.5;
 
+    const distX = mouseX - (baseCenterX + offsetX);
+    const distY = mouseY - (baseCenterY + offsetY);
+    const distance = Math.sqrt(distX * distX + distY * distY);
+
+    // Only activate if very close to the splatter itself
+    if (distance < 140) {
+      const angle = Math.atan2(distY, distX);
       offsetX += (Math.cos(angle) * 35 - offsetX) * 0.15;
       offsetY += (Math.sin(angle) * 35 - offsetY) * 0.15;
     } else {
