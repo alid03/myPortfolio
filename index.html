@@ -97,6 +97,15 @@
 
     .hero-bg-grid { display: none; }
 
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
     .hero-eyebrow {
       font-family: 'Inter', sans-serif;
       font-size: 0.85rem;
@@ -789,7 +798,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg-grid"></div>
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-eyebrow">Kennesaw, GA</div>
   <h1 class="hero-name" id="heroName">Ali Dabdoub</h1>
   <p class="hero-desc">
@@ -812,7 +821,7 @@
     <div class="about-text reveal">
       <h2>Aspiring software engineer interested in building tools that make people's lives easier.</h2>
       <p>
-        I'm Ali — based in Kennesaw, GA. Graduated from KSU in December 2025 with a B.S. in Software Engineering and a Minor in CS, <strong>Magna Cum Laude</strong>, 3.81 GPA. Starting a <strong>M.S. in Computer Science at Georgia Tech</strong> in Fall 2026.
+        Hello I am Ali! I am based in Kennesaw, GA. Graduated from KSU in December 2025 with a B.S. in Software Engineering and a Minor in CS, <strong>Magna Cum Laude</strong>, 3.81 GPA. Starting a <strong>M.S. in Computer Science at Georgia Tech</strong> in Fall 2026.
       </p>
       <p>
         My background spans both sides of the dev cycle. I spent six months as a <strong>Software QA Engineer at General Devices</strong> testing a real mobile health app inside an Agile team, then designed and shipped a <strong>live production website for Marietta Tire Company</strong> — custom domain, SMS notifications, serverless forms, the whole thing. School projects across frontend, backend, and databases fill out the rest.
@@ -1173,6 +1182,51 @@
     fill.style.height = (p * 100) + '%';
   }, { passive: true });
 
+  /* ── HERO SPLATTER ── */
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  const heroSection = document.getElementById('hero');
+
+  function resizeCanvas() {
+    canvas.width = heroSection.offsetWidth;
+    canvas.height = heroSection.offsetHeight;
+    drawSplatter();
+  }
+
+  function drawSplatter() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#4178E0';
+
+    const centerX = canvas.width * 0.75;
+    const centerY = canvas.height * 0.5;
+    const mainRadius = 120;
+
+    // Main splatter center
+    drawSplat(centerX, centerY, mainRadius, 12);
+
+    // Satellite splatters
+    drawSplat(centerX + 80, centerY - 100, 50, 8);
+    drawSplat(centerX + 100, centerY + 60, 45, 7);
+    drawSplat(centerX - 40, centerY + 80, 35, 6);
+    drawSplat(centerX + 60, centerY - 50, 40, 6);
+  }
+
+  function drawSplat(x, y, radius, numParticles) {
+    for (let i = 0; i < numParticles; i++) {
+      const angle = (Math.PI * 2 / numParticles) * i + (Math.random() - 0.5);
+      const distance = radius + Math.random() * radius * 0.5;
+      const px = x + Math.cos(angle) * distance;
+      const py = y + Math.sin(angle) * distance;
+      const size = radius * (0.3 + Math.random() * 0.7);
+
+      ctx.beginPath();
+      ctx.arc(px, py, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas, { passive: true });
 
 </script>
 </body>
