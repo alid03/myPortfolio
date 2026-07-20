@@ -9,7 +9,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -33,44 +33,10 @@
       font-weight: 400;
       line-height: 1.65;
       overflow-x: hidden;
-      cursor: none;
     }
-
-    a, button { cursor: none; }
 
     /* ── CURSOR ── */
-    #cursor-dot {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s;
-    }
-
-    #cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      opacity: 0.45;
-      transition: width 0.3s, height 0.3s, opacity 0.3s;
-    }
-
-    #cursor-glow {
-      position: fixed;
-      width: 480px; height: 480px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(65,120,224,0.07) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      transform: translate(-50%, -50%);
-    }
+    #cursor-dot, #cursor-ring, #cursor-glow { display: none; }
 
     /* ── NAV ── */
     nav {
@@ -93,10 +59,10 @@
     }
 
     .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0;
       color: var(--text);
       text-decoration: none;
     }
@@ -106,12 +72,13 @@
     nav ul { list-style: none; display: flex; gap: 2.5rem; align-items: center; }
 
     nav ul a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0;
       color: var(--muted);
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       transition: color 0.2s;
     }
 
@@ -128,63 +95,48 @@
       overflow: hidden;
     }
 
-    .hero-bg-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 64px 64px;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .hero-bg-grid::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 40% 50%, transparent 25%, var(--bg) 75%);
-    }
+    .hero-bg-grid { display: none; }
 
     .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--muted);
+      text-transform: none;
+      margin-bottom: 1rem;
       position: relative; z-index: 1;
       opacity: 0;
       animation: fadeUp 0.7s 0.2s ease forwards;
     }
 
     .hero-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(4rem, 10vw, 9rem);
-      line-height: 0.92;
-      letter-spacing: -0.04em;
-      margin-bottom: 2.5rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
       position: relative; z-index: 1;
       opacity: 0;
       animation: fadeUp 0.7s 0.35s ease forwards;
       will-change: transform;
     }
 
-    .hero-name .line2 { color: var(--accent); display: block; }
+    .hero-name .line2 { color: inherit; display: inline; }
 
     .hero-desc {
-      max-width: 480px;
+      max-width: 520px;
       font-size: 1rem;
       color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 3rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
       position: relative; z-index: 1;
       opacity: 0;
       animation: fadeUp 0.7s 0.5s ease forwards;
     }
 
-    .hero-desc strong { color: var(--text); font-weight: 500; }
+    .hero-desc strong { color: var(--text); font-weight: 600; }
 
     .hero-ctas {
       display: flex;
@@ -208,54 +160,57 @@
     .hero-scroll-line { width: 40px; height: 1px; background: var(--border); }
 
     .hero-scroll span {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
       color: var(--muted);
     }
 
     /* ── BUTTONS ── */
     .btn {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.9rem 2.2rem;
-      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
       text-decoration: none;
-      transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
       display: inline-block;
     }
 
-    .btn-primary { background: var(--accent); color: #fff; border: 1.5px solid var(--accent); }
-    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: 0 8px 24px rgba(65,120,224,0.3); }
-    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 
     /* ── SECTIONS ── */
-    section { padding: 7rem 4rem; position: relative; }
+    section { padding: 5rem 4rem; position: relative; }
 
     .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0;
       color: var(--accent);
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
-    .section-label::before { content: ''; width: 24px; height: 1.5px; background: var(--accent); }
+    .section-label::before { content: ''; width: 12px; height: 1px; background: var(--accent); }
 
     h2 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Merriweather', serif;
       font-weight: 700;
-      font-size: clamp(2rem, 4vw, 3rem);
-      letter-spacing: -0.025em;
-      line-height: 1.1;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      letter-spacing: 0;
+      line-height: 1.2;
       margin-bottom: 3rem;
       color: var(--text);
     }
@@ -282,10 +237,11 @@
     .skills-wrap { margin-top: 2.5rem; }
 
     .skills-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
       color: var(--muted);
       margin-bottom: 1rem;
     }
@@ -293,18 +249,19 @@
     .skills-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
     .skill-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0;
       color: var(--accent);
       background: var(--accent-dim);
-      padding: 0.4rem 0.9rem;
-      border-radius: 100px;
+      padding: 0.35rem 0.85rem;
+      border-radius: 4px;
       border: 1px solid transparent;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s;
     }
 
-    .skill-tag:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .skill-tag:hover { border-color: var(--accent); }
 
     .about-aside { position: sticky; top: 8rem; }
 
@@ -317,10 +274,11 @@
     }
 
     .stat-card h3 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
       color: var(--muted);
       margin-bottom: 1.25rem;
     }
@@ -334,7 +292,7 @@
 
     .edu-entry strong {
       display: block;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
       font-weight: 600;
       color: var(--text);
@@ -342,10 +300,11 @@
     }
 
     .edu-entry span {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.66rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
       color: var(--muted);
-      letter-spacing: 0.03em;
+      letter-spacing: 0;
     }
 
     .status-pill {
@@ -429,25 +388,25 @@
     }
 
     .timeline-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
       color: var(--accent);
       margin-bottom: 0.5rem;
     }
 
     .timeline-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.01em;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 0;
       color: var(--text);
       margin-bottom: 0.25rem;
       transition: color 0.2s;
     }
 
-    .timeline-item:hover .timeline-title { color: var(--accent); }
 
     .timeline-sub {
       font-size: 0.84rem;
@@ -455,17 +414,8 @@
     }
 
     .timeline-body {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      margin-top: 0;
-      transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease, margin-top 0.4s ease;
-    }
-
-    .timeline-item:hover .timeline-body {
-      max-height: 260px;
       opacity: 1;
-      margin-top: 1.25rem;
+      margin-top: 1rem;
     }
 
     .timeline-body p {
@@ -478,14 +428,15 @@
     .t-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
     .t-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid var(--border);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: none;
       padding: 0.25rem 0.6rem;
-      border-radius: 4px;
+      border-radius: 3px;
     }
 
     /* ── EXPERIENCE ── */
@@ -505,17 +456,18 @@
     .exp-meta { position: sticky; top: 8rem; }
 
     .exp-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
       color: var(--accent);
       display: block;
       margin-bottom: 0.4rem;
     }
 
     .exp-company {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
       font-size: 0.95rem;
       color: var(--text);
@@ -524,18 +476,19 @@
     }
 
     .exp-type {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.64rem;
-      letter-spacing: 0.05em;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--muted);
       display: block;
     }
 
     .exp-body h4 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 1.2rem;
-      letter-spacing: -0.01em;
+      font-size: 1.1rem;
+      letter-spacing: 0;
       margin-bottom: 1.25rem;
       color: var(--text);
     }
@@ -605,13 +558,14 @@
 
     .project-badge {
       display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
       background: var(--accent);
       color: #fff;
-      padding: 0.2rem 0.65rem;
+      padding: 0.35rem 0.75rem;
       border-radius: 4px;
       margin-bottom: 0.75rem;
     }
@@ -622,10 +576,10 @@
     }
 
     .project-card h3 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: -0.02em;
+      font-size: 1.3rem;
+      letter-spacing: 0;
       margin-bottom: 0.75rem;
       color: var(--text);
       transition: color 0.2s;
@@ -643,24 +597,26 @@
     .p-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
 
     .p-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid var(--border);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: none;
       padding: 0.25rem 0.6rem;
-      border-radius: 4px;
+      border-radius: 3px;
     }
 
     .p-links { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
     .p-link {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--text);
       border: 1px solid var(--border);
       padding: 0.45rem 1rem;
       border-radius: 4px;
@@ -668,7 +624,7 @@
       transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
 
-    .p-link:hover { border-color: var(--accent); color: var(--accent); }
+    .p-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 
     .p-link.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .p-link.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
@@ -734,7 +690,7 @@
       border-top: 1px solid var(--border);
       text-align: center;
       background: var(--surface);
-      padding: 9rem 4rem;
+      padding: 6rem 4rem;
     }
 
     #contact .section-label { justify-content: center; }
@@ -764,10 +720,11 @@
     }
 
     footer p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
       color: var(--muted);
-      letter-spacing: 0.06em;
+      letter-spacing: 0;
     }
 
     /* ── REVEAL ── */
@@ -794,11 +751,11 @@
     @media (max-width: 900px) {
       nav { padding: 1.25rem 1.5rem; }
       nav.scrolled { padding: 0.875rem 1.5rem; }
-      section { padding: 5rem 1.5rem; }
-      #hero { padding: 8rem 1.5rem 5rem; }
-      #contact { padding: 6rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 6rem 1.5rem 4rem; }
+      #contact { padding: 4rem 1.5rem; }
       footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       .about-aside { position: static; }
       .exp-item { grid-template-columns: 1fr; gap: 1rem; }
       .exp-meta { position: static; }
@@ -809,37 +766,13 @@
     @media (max-width: 600px) {
       nav ul { gap: 1.25rem; }
       nav ul li:nth-child(2), nav ul li:nth-child(3) { display: none; }
-    }
-
-    /* ── TOUCH / MOBILE ── */
-    @media (hover: none) {
-      body, a, button { cursor: auto; }
-      #cursor-dot, #cursor-ring, #cursor-glow { display: none; }
+      .hero-scroll { display: none; }
+      h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
     }
 
     /* ── MOBILE TOAST ── */
     #mobile-toast {
       display: none;
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--text);
-      color: #fff;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.06em;
-      padding: 0.75rem 1.25rem;
-      border-radius: 100px;
-      white-space: nowrap;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    @media (hover: none) {
-      #mobile-toast { display: block; }
     }
   </style>
 </head>
@@ -865,19 +798,14 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg-grid"></div>
-  <div class="hero-eyebrow">Software Engineer &nbsp;·&nbsp; Kennesaw, GA</div>
-  <h1 class="hero-name" id="heroName">
-    Ali M.
-    <span class="line2">Dabdoub</span>
-  </h1>
+  <div class="hero-eyebrow">Kennesaw, GA</div>
+  <h1 class="hero-name" id="heroName">Ali Dabdoub</h1>
   <p class="hero-desc">
-    B.S. Software Engineering, <strong>Magna Cum Laude</strong>, KSU '25.
-    Starting M.S. CS at <strong>Georgia Tech</strong>, Fall 2026.
-    I enjoy building things, from test cases to live websites.
+    Software engineer building full-stack applications. B.S. Software Engineering from Kennesaw State, <strong>Magna Cum Laude</strong>. Starting M.S. Computer Science at <strong>Georgia Tech</strong> in Fall 2026.
   </p>
   <div class="hero-ctas">
-    <a href="#projects" class="btn btn-primary magnetic">View Projects</a>
-    <a href="adabdoub26.pdf" class="btn btn-outline magnetic" target="_blank">Download CV</a>
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="adabdoub26.pdf" class="btn btn-outline" target="_blank">Download CV</a>
   </div>
   <div class="hero-scroll">
     <div class="hero-scroll-line"></div>
@@ -901,22 +829,13 @@
         Outside of screens I'm usually at the gym, watching or playing soccer or basketball, gaming, or adding to my Pokémon card collection.
       </p>
       <div class="skills-wrap">
-        <div class="skills-label">Core Skills</div>
+        <div class="skills-label">Languages & Tools</div>
         <div class="skills-grid">
           <span class="skill-tag">Python</span>
           <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">Java</span>
-          <span class="skill-tag">C#</span>
-          <span class="skill-tag">Swift</span>
           <span class="skill-tag">React</span>
-          <span class="skill-tag">Django REST</span>
-          <span class="skill-tag">SQL / PostgreSQL</span>
-          <span class="skill-tag">Git / GitHub</span>
-          <span class="skill-tag">Playwright</span>
-          <span class="skill-tag">AWS S3</span>
-          <span class="skill-tag">Netlify</span>
-          <span class="skill-tag">Figma</span>
-          <span class="skill-tag">Agile / Scrum</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">Django</span>
         </div>
       </div>
     </div>
@@ -931,24 +850,6 @@
           <strong>Kennesaw State University</strong>
           <span>B.S. Software Engineering &nbsp;·&nbsp; Minor in CS</span>
           <span>Magna Cum Laude &nbsp;·&nbsp; GPA 3.81 &nbsp;·&nbsp; Dec 2025</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <h3>Status</h3>
-        <p style="font-size:0.86rem; color:var(--muted); line-height:1.7;">Open to tech opportunities while preparing for Georgia Tech.</p>
-        <span class="status-pill">Available for work</span>
-      </div>
-      <div class="stat-card">
-        <h3>Off the Clock</h3>
-        <div class="edu-entry">
-          <strong>Soccer &amp; Basketball</strong>
-          <span>Both watching and playing</span>
-        </div>
-        <div class="edu-entry">
-          <strong>Gym &amp; Gaming</strong>
-        </div>
-        <div class="edu-entry">
-          <strong>Pokémon Card Collector</strong>
         </div>
       </div>
     </div>
@@ -1071,7 +972,7 @@
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-label">Experience</div>
-  <h2>Where I've<br>Worked</h2>
+  <h2>Professional Experience</h2>
   <div>
 
     <div class="exp-item reveal">
@@ -1134,13 +1035,13 @@
   <div class="projects-grid">
 
     <!-- Marietta Tire — Featured -->
-    <div class="project-card featured reveal tilt-card">
+    <div class="project-card featured reveal ">
       <div>
         <div class="project-num">01</div>
         <span class="project-badge">Live Site</span>
         <h3>Marietta Tire Company</h3>
         <p>
-          Full production website for a local tire and auto shop. Custom-built from scratch — responsive design, quote and appointment flows with real email and SMS notifications, Twilio API integration, custom domain, SSL. It's live, maintained, and customers use it daily.
+          Full-stack production website built for a local tire shop. Designed the UI for mobile-first responsiveness, implemented quote and appointment request flows with real-time SMS and email notifications via Netlify serverless functions and Twilio API. Deployed with custom domain, SSL, and continues to serve customer requests daily.
         </p>
         <div class="p-tags">
           <span class="p-tag">HTML / CSS / JS</span>
@@ -1165,11 +1066,11 @@
     </div>
 
     <!-- FlowCounts -->
-    <div class="project-card reveal tilt-card">
+    <div class="project-card reveal ">
       <span class="card-arrow">↗</span>
       <div class="project-num">02</div>
       <h3>FlowCounts</h3>
-      <p>Full-stack accounting web app — React, Django REST, PostgreSQL. Core CRUD, three-level role-based access, audit logging, and password management. Demo playlist available.</p>
+      <p>Full-stack accounting application built with React and Django REST. Implemented core financial features (invoices, expense tracking), role-based access control across three user levels, secure authentication with JWT, and audit logging for compliance. Deployed with Docker and documented with demo videos.</p>
       <div class="p-tags">
         <span class="p-tag">React</span>
         <span class="p-tag">Django REST</span>
@@ -1184,11 +1085,11 @@
     </div>
 
     <!-- ReManned -->
-    <div class="project-card reveal tilt-card">
+    <div class="project-card reveal ">
       <span class="card-arrow">↗</span>
       <div class="project-num">03</div>
       <h3>ReManned International</h3>
-      <p>Sponsor-backed capstone. Requirements gathering, Figma wireframes, frontend and backend implementation — sprint-based delivery with a real client in the loop.</p>
+      <p>Sponsor-backed capstone project for a real client. Led requirements gathering and translated feedback into Figma wireframes. Implemented responsive frontend components with JavaScript/Vite, built backend services with Python, and managed PostgreSQL database schema—all within sprint-based delivery cycles.</p>
       <div class="p-tags">
         <span class="p-tag">JavaScript</span>
         <span class="p-tag">Vite</span>
@@ -1203,12 +1104,12 @@
     </div>
 
     <!-- ProFlows -->
-    <a href="https://github.com/alid03/project-management-system" target="_blank" class="project-card reveal tilt-card">
+    <a href="https://github.com/alid03/project-management-system" target="_blank" class="project-card reveal ">
       <span class="card-arrow">↗</span>
       <div class="project-num">04</div>
-      <span class="project-badge soft">Group Leader</span>
+      <span class="project-badge soft">Team Lead</span>
       <h3>ProFlows</h3>
-      <p>Project management desktop tool for SWE teams — tracks requirements, risk logs, and effort hours. Led a team of five. As much of a lesson in coordination as in code.</p>
+      <p>Desktop project management tool built with Python and Tkinter for software engineering teams. Led a team of five developers through design, implementation, and delivery. Managed requirements tracking, risk logs, and effort estimation—learning as much about team coordination and Git workflows as the code itself.</p>
       <div class="p-tags">
         <span class="p-tag">Python</span>
         <span class="p-tag">Tkinter</span>
@@ -1222,68 +1123,23 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="section-label">Contact</div>
-  <h2 class="reveal">Let's<br><em>connect.</em></h2>
-  <p class="contact-sub reveal">Open to tech opportunities. Feel free to reach out.</p>
+  <div class="section-label">Get in Touch</div>
+  <h2 class="reveal">Let's work together.</h2>
+  <p class="contact-sub reveal">I'm open to opportunities and always happy to discuss interesting projects.</p>
   <div class="contact-links reveal">
-    <a href="mailto:AliDabdoub0@gmail.com" class="btn btn-primary magnetic">Send an Email</a>
-    <a href="https://www.linkedin.com/in/ali-dabdoub-b82a91279" target="_blank" class="btn btn-outline magnetic">LinkedIn</a>
-    <a href="https://github.com/alid03" target="_blank" class="btn btn-outline magnetic">GitHub</a>
+    <a href="mailto:AliDabdoub0@gmail.com" class="btn btn-primary">Send an Email</a>
+    <a href="https://www.linkedin.com/in/ali-dabdoub-b82a91279" target="_blank" class="btn btn-outline">LinkedIn</a>
+    <a href="https://github.com/alid03" target="_blank" class="btn btn-outline">GitHub</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <p>© 2026 Ali Dabdoub</p>
-  <a href="https://www.linkedin.com/in/ali-dabdoub-b82a91279" target="_blank" style="font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--muted); letter-spacing:0.06em; text-decoration:none; transition:color 0.2s;" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='var(--muted)'">LinkedIn ↗</a>
+  <a href="https://www.linkedin.com/in/ali-dabdoub-b82a91279" target="_blank" style="font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:500; color:var(--muted); text-decoration:none; transition:color 0.2s;" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='var(--muted)'">LinkedIn ↗</a>
 </footer>
 
 <script>
-  /* ── CURSOR ── */
-  const dot  = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  const glow = document.getElementById('cursor-glow');
-
-  let mx = -999, my = -999;
-  let rx = -999, ry = -999;
-  let gx = -999, gy = -999;
-
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-  (function loop() {
-    dot.style.left  = mx + 'px';
-    dot.style.top   = my + 'px';
-
-    rx += (mx - rx) * 0.13;
-    ry += (my - ry) * 0.13;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-
-    gx += (mx - gx) * 0.055;
-    gy += (my - gy) * 0.055;
-    glow.style.left = gx + 'px';
-    glow.style.top  = gy + 'px';
-
-    requestAnimationFrame(loop);
-  })();
-
-  /* enlarge ring on interactive elements */
-  document.querySelectorAll('a, button, .timeline-item, .skill-tag, .project-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width  = '54px';
-      ring.style.height = '54px';
-      ring.style.opacity = '0.25';
-      dot.style.width  = '10px';
-      dot.style.height = '10px';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width  = '36px';
-      ring.style.height = '36px';
-      ring.style.opacity = '0.45';
-      dot.style.width  = '8px';
-      dot.style.height = '8px';
-    });
-  });
 
   /* ── NAV SCROLL ── */
   const nav = document.getElementById('nav');
@@ -1302,56 +1158,6 @@
     });
   });
 
-  /* ── HERO PARALLAX ── */
-  const heroEl   = document.getElementById('hero');
-  const heroName = document.getElementById('heroName');
-
-  heroEl.addEventListener('mousemove', e => {
-    const r  = heroEl.getBoundingClientRect();
-    const cx = (e.clientX - r.left - r.width  / 2) / r.width;
-    const cy = (e.clientY - r.top  - r.height / 2) / r.height;
-    heroName.style.transform = `translate(${cx * -20}px, ${cy * -10}px)`;
-  });
-
-  heroEl.addEventListener('mouseleave', () => {
-    heroName.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
-    heroName.style.transform = '';
-    setTimeout(() => heroName.style.transition = '', 650);
-  });
-
-  /* ── MAGNETIC BUTTONS ── */
-  document.querySelectorAll('.magnetic').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      el.style.transition = 'transform 0.08s linear, box-shadow 0.25s, background 0.25s, border-color 0.25s, color 0.25s';
-    });
-    el.addEventListener('mousemove', e => {
-      const r  = el.getBoundingClientRect();
-      const cx = e.clientX - r.left - r.width  / 2;
-      const cy = e.clientY - r.top  - r.height / 2;
-      el.style.transform = `translate(${cx * 0.28}px, ${cy * 0.38}px)`;
-    });
-    el.addEventListener('mouseleave', () => {
-      el.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s, background 0.25s, border-color 0.25s, color 0.25s';
-      el.style.transform = '';
-    });
-  });
-
-  /* ── CARD TILT ── */
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.08s linear, border-color 0.3s, box-shadow 0.3s';
-    });
-    card.addEventListener('mousemove', e => {
-      const r  = card.getBoundingClientRect();
-      const cx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
-      const cy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
-      card.style.transform = `perspective(900px) rotateY(${cx * 4}deg) rotateX(${cy * -3}deg) translateZ(6px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transition = 'transform 0.55s cubic-bezier(0.4,0,0.2,1), border-color 0.3s, box-shadow 0.3s';
-      card.style.transform = '';
-    });
-  });
 
   /* ── SCROLL REVEAL ── */
   const revealObs = new IntersectionObserver((entries) => {
@@ -1375,21 +1181,7 @@
     fill.style.height = (p * 100) + '%';
   }, { passive: true });
 
-  /* ── TIMELINE TOUCH (mobile click-to-expand) ── */
-  document.querySelectorAll('.timeline-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-      document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('active'));
-      if (!isActive) item.classList.add('active');
-    });
-  });
 
-  /* ── MOBILE TOAST ── */
-  const toast = document.getElementById('mobile-toast');
-  if (toast && window.matchMedia('(hover: none)').matches) {
-    setTimeout(() => { toast.style.opacity = '1'; }, 800);
-    setTimeout(() => { toast.style.opacity = '0'; }, 4000);
-  }
 </script>
 </body>
 </html>
