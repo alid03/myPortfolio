@@ -1182,54 +1182,68 @@
     fill.style.height = (p * 100) + '%';
   }, { passive: true });
 
-  /* ── HERO SPLATTER ── */
+  /* ── BOUNCING AD LOGO ── */
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
   const heroSection = document.getElementById('hero');
 
-  let offsetX = 0, offsetY = 0;
-  let time = 0;
+  const colors = ['#4178E0', '#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#F38181', '#6BCB77'];
+  let colorIndex = 0;
+
+  let x, y, vx, vy;
+  const textSize = 80;
+  const padding = 40;
 
   function resizeCanvas() {
     canvas.width = heroSection.offsetWidth;
     canvas.height = heroSection.offsetHeight;
-    drawSplatter();
-  }
 
-  function drawSplatter() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#4178E0';
-
-    const centerX = canvas.width * 0.75 + offsetX;
-    const centerY = canvas.height * 0.5 + offsetY;
-    const mainRadius = 120;
-
-    drawSplat(centerX, centerY, mainRadius, 12);
-    drawSplat(centerX + 80, centerY - 100, 50, 8);
-    drawSplat(centerX + 100, centerY + 60, 45, 7);
-    drawSplat(centerX - 40, centerY + 80, 35, 6);
-    drawSplat(centerX + 60, centerY - 50, 40, 6);
-  }
-
-  function drawSplat(x, y, radius, numParticles) {
-    for (let i = 0; i < numParticles; i++) {
-      const angle = (Math.PI * 2 / numParticles) * i + (Math.random() - 0.5);
-      const distance = radius + Math.random() * radius * 0.5;
-      const px = x + Math.cos(angle) * distance;
-      const py = y + Math.sin(angle) * distance;
-      const size = radius * (0.3 + Math.random() * 0.7);
-
-      ctx.beginPath();
-      ctx.arc(px, py, size, 0, Math.PI * 2);
-      ctx.fill();
+    if (!x) {
+      x = canvas.width / 2;
+      y = canvas.height / 2;
+      vx = 3;
+      vy = 2.5;
     }
   }
 
+  function getTextMetrics() {
+    ctx.font = `bold ${textSize}px 'Inter', sans-serif`;
+    const metrics = ctx.measureText('AD');
+    return {
+      width: metrics.width,
+      height: textSize
+    };
+  }
+
   function animate() {
-    time += 0.002;
-    offsetX = Math.sin(time) * 40;
-    offsetY = Math.cos(time * 0.6) * 30;
-    drawSplatter();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const metrics = getTextMetrics();
+
+    x += vx;
+    y += vy;
+
+    // Bounce off walls and change color
+    if (x - metrics.width / 2 < padding || x + metrics.width / 2 > canvas.width - padding) {
+      vx *= -1;
+      colorIndex = (colorIndex + 1) % colors.length;
+    }
+    if (y - textSize / 2 < padding || y + textSize / 2 > canvas.height - padding) {
+      vy *= -1;
+      colorIndex = (colorIndex + 1) % colors.length;
+    }
+
+    // Keep within bounds
+    x = Math.max(metrics.width / 2 + padding, Math.min(canvas.width - metrics.width / 2 - padding, x));
+    y = Math.max(textSize / 2 + padding, Math.min(canvas.height - textSize / 2 - padding, y));
+
+    // Draw text
+    ctx.font = `bold ${textSize}px 'Inter', sans-serif`;
+    ctx.fillStyle = colors[colorIndex];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('AD', x, y);
+
     requestAnimationFrame(animate);
   }
 
