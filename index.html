@@ -1189,6 +1189,7 @@
 
   let mouseX = 0, mouseY = 0;
   let offsetX = 0, offsetY = 0;
+  const splatPositions = [];
 
   function resizeCanvas() {
     canvas.width = heroSection.offsetWidth;
@@ -1199,18 +1200,27 @@
   function drawSplatter() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#4178E0';
+    splatPositions.length = 0;
 
     const centerX = canvas.width * 0.75 + offsetX;
     const centerY = canvas.height * 0.5 + offsetY;
     const mainRadius = 120;
 
     // Main splatter center
+    splatPositions.push({ x: centerX, y: centerY, radius: mainRadius });
     drawSplat(centerX, centerY, mainRadius, 12);
 
     // Satellite splatters
+    splatPositions.push({ x: centerX + 80, y: centerY - 100, radius: 50 });
     drawSplat(centerX + 80, centerY - 100, 50, 8);
+
+    splatPositions.push({ x: centerX + 100, y: centerY + 60, radius: 45 });
     drawSplat(centerX + 100, centerY + 60, 45, 7);
+
+    splatPositions.push({ x: centerX - 40, y: centerY + 80, radius: 35 });
     drawSplat(centerX - 40, centerY + 80, 35, 6);
+
+    splatPositions.push({ x: centerX + 60, y: centerY - 50, radius: 40 });
     drawSplat(centerX + 60, centerY - 50, 40, 6);
   }
 
@@ -1228,16 +1238,21 @@
     }
   }
 
+  function isMouseOverSplatter() {
+    return splatPositions.some(splat => {
+      const distX = mouseX - splat.x;
+      const distY = mouseY - splat.y;
+      const distance = Math.sqrt(distX * distX + distY * distY);
+      return distance < splat.radius * 1.3;
+    });
+  }
+
   heroSection.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 
-    // Check if mouse is over the blue paint
-    const imageData = ctx.getImageData(mouseX, mouseY, 1, 1);
-    const isOverPaint = imageData.data[3] > 128; // Check alpha channel
-
-    if (isOverPaint) {
+    if (isMouseOverSplatter()) {
       const centerX = canvas.width * 0.75;
       const centerY = canvas.height * 0.5;
       const distX = mouseX - centerX;
