@@ -1233,21 +1233,22 @@
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 
-    const centerX = canvas.width * 0.75;
-    const centerY = canvas.height * 0.5;
-    const distX = mouseX - centerX;
-    const distY = mouseY - centerY;
-    const distance = Math.sqrt(distX * distX + distY * distY);
+    // Check if mouse is over the blue paint
+    const imageData = ctx.getImageData(mouseX, mouseY, 1, 1);
+    const isOverPaint = imageData.data[3] > 128; // Check alpha channel
 
-    const maxDistance = 200;
-    if (distance < maxDistance) {
-      const force = (1 - distance / maxDistance) * 40;
+    if (isOverPaint) {
+      const centerX = canvas.width * 0.75;
+      const centerY = canvas.height * 0.5;
+      const distX = mouseX - centerX;
+      const distY = mouseY - centerY;
       const angle = Math.atan2(distY, distX);
-      offsetX += (Math.cos(angle) * force - offsetX) * 0.1;
-      offsetY += (Math.sin(angle) * force - offsetY) * 0.1;
+
+      offsetX += (Math.cos(angle) * 35 - offsetX) * 0.15;
+      offsetY += (Math.sin(angle) * 35 - offsetY) * 0.15;
     } else {
-      offsetX += (0 - offsetX) * 0.05;
-      offsetY += (0 - offsetY) * 0.05;
+      offsetX += (0 - offsetX) * 0.08;
+      offsetY += (0 - offsetY) * 0.08;
     }
 
     drawSplatter();
