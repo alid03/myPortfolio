@@ -1187,6 +1187,9 @@
   const ctx = canvas.getContext('2d');
   const heroSection = document.getElementById('hero');
 
+  let mouseX = 0, mouseY = 0;
+  let offsetX = 0, offsetY = 0;
+
   function resizeCanvas() {
     canvas.width = heroSection.offsetWidth;
     canvas.height = heroSection.offsetHeight;
@@ -1197,8 +1200,8 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#4178E0';
 
-    const centerX = canvas.width * 0.75;
-    const centerY = canvas.height * 0.5;
+    const centerX = canvas.width * 0.75 + offsetX;
+    const centerY = canvas.height * 0.5 + offsetY;
     const mainRadius = 120;
 
     // Main splatter center
@@ -1224,6 +1227,40 @@
       ctx.fill();
     }
   }
+
+  heroSection.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+
+    const centerX = canvas.width * 0.75;
+    const centerY = canvas.height * 0.5;
+    const distX = mouseX - centerX;
+    const distY = mouseY - centerY;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+
+    const maxDistance = 200;
+    if (distance < maxDistance) {
+      const force = (1 - distance / maxDistance) * 40;
+      const angle = Math.atan2(distY, distX);
+      offsetX += (Math.cos(angle) * force - offsetX) * 0.1;
+      offsetY += (Math.sin(angle) * force - offsetY) * 0.1;
+    } else {
+      offsetX += (0 - offsetX) * 0.05;
+      offsetY += (0 - offsetY) * 0.05;
+    }
+
+    drawSplatter();
+  });
+
+  heroSection.addEventListener('mouseleave', () => {
+    offsetX += (0 - offsetX) * 0.08;
+    offsetY += (0 - offsetY) * 0.08;
+    if (Math.abs(offsetX) > 0.1 || Math.abs(offsetY) > 0.1) {
+      drawSplatter();
+      requestAnimationFrame(() => heroSection.dispatchEvent(new Event('mouseleave')));
+    }
+  });
 
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
