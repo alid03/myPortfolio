@@ -1187,9 +1187,8 @@
   const ctx = canvas.getContext('2d');
   const heroSection = document.getElementById('hero');
 
-  let mouseX = 0, mouseY = 0;
   let offsetX = 0, offsetY = 0;
-  const splatPositions = [];
+  let time = 0;
 
   function resizeCanvas() {
     canvas.width = heroSection.offsetWidth;
@@ -1200,27 +1199,15 @@
   function drawSplatter() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#4178E0';
-    splatPositions.length = 0;
 
     const centerX = canvas.width * 0.75 + offsetX;
     const centerY = canvas.height * 0.5 + offsetY;
     const mainRadius = 120;
 
-    // Main splatter center
-    splatPositions.push({ x: centerX, y: centerY, radius: mainRadius });
     drawSplat(centerX, centerY, mainRadius, 12);
-
-    // Satellite splatters
-    splatPositions.push({ x: centerX + 80, y: centerY - 100, radius: 50 });
     drawSplat(centerX + 80, centerY - 100, 50, 8);
-
-    splatPositions.push({ x: centerX + 100, y: centerY + 60, radius: 45 });
     drawSplat(centerX + 100, centerY + 60, 45, 7);
-
-    splatPositions.push({ x: centerX - 40, y: centerY + 80, radius: 35 });
     drawSplat(centerX - 40, centerY + 80, 35, 6);
-
-    splatPositions.push({ x: centerX + 60, y: centerY - 50, radius: 40 });
     drawSplat(centerX + 60, centerY - 50, 40, 6);
   }
 
@@ -1238,39 +1225,16 @@
     }
   }
 
-  heroSection.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-
-    const baseCenterX = canvas.width * 0.75;
-    const baseCenterY = canvas.height * 0.5;
-
-    const distX = mouseX - (baseCenterX + offsetX);
-    const distY = mouseY - (baseCenterY + offsetY);
-    const distance = Math.sqrt(distX * distX + distY * distY);
-
-    // Only activate if very close to the splatter itself
-    if (distance < 140) {
-      const angle = Math.atan2(distY, distX);
-      offsetX += (Math.cos(angle) * 35 - offsetX) * 0.15;
-      offsetY += (Math.sin(angle) * 35 - offsetY) * 0.15;
-    } else {
-      offsetX += (0 - offsetX) * 0.08;
-      offsetY += (0 - offsetY) * 0.08;
-    }
-
+  function animate() {
+    time += 0.005;
+    offsetX = Math.sin(time) * 45;
+    offsetY = Math.cos(time * 0.7) * 35;
     drawSplatter();
-  });
+    requestAnimationFrame(animate);
+  }
 
-  heroSection.addEventListener('mouseleave', () => {
-    offsetX += (0 - offsetX) * 0.08;
-    offsetY += (0 - offsetY) * 0.08;
-    if (Math.abs(offsetX) > 0.1 || Math.abs(offsetY) > 0.1) {
-      drawSplatter();
-      requestAnimationFrame(() => heroSection.dispatchEvent(new Event('mouseleave')));
-    }
-  });
+  resizeCanvas();
+  animate();
 
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
