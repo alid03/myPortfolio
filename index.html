@@ -1226,17 +1226,15 @@
   }
 
   function animate() {
-    time += 0.005;
-    offsetX = Math.sin(time) * 45;
-    offsetY = Math.cos(time * 0.7) * 35;
+    time += 0.002;
+    offsetX = Math.sin(time) * 40;
+    offsetY = Math.cos(time * 0.6) * 30;
     drawSplatter();
     requestAnimationFrame(animate);
   }
 
   resizeCanvas();
   animate();
-
-  resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
 
 </script>
