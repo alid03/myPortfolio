@@ -24,6 +24,41 @@
       --accent-hover: #2D60CC;
     }
 
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0D1B2A;
+        --surface: #151F33;
+        --border: #2A3F5F;
+        --text: #F7F9FF;
+        --muted: #9BA8BB;
+        --accent: #4178E0;
+        --accent-dim: #1A2E52;
+        --accent-hover: #5A8FFF;
+      }
+    }
+
+    [data-theme="dark"] {
+      --bg: #0D1B2A;
+      --surface: #151F33;
+      --border: #2A3F5F;
+      --text: #F7F9FF;
+      --muted: #9BA8BB;
+      --accent: #4178E0;
+      --accent-dim: #1A2E52;
+      --accent-hover: #5A8FFF;
+    }
+
+    [data-theme="light"] {
+      --bg: #F7F9FF;
+      --surface: #FFFFFF;
+      --border: #DDE6F5;
+      --text: #0D1B2A;
+      --muted: #7288A8;
+      --accent: #4178E0;
+      --accent-dim: #EAF0FD;
+      --accent-hover: #2D60CC;
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -83,6 +118,8 @@
     }
 
     nav ul a:hover { color: var(--accent); }
+
+    #theme-toggle:hover { color: var(--accent); }
 
     /* ── HERO ── */
     #hero {
@@ -793,6 +830,7 @@
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><button id="theme-toggle" aria-label="Toggle dark mode" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; padding: 0; color: var(--muted); transition: color 0.2s;">🌙</button></li>
   </ul>
 </nav>
 
@@ -1320,6 +1358,35 @@
   resizeCanvas();
   animate();
   window.addEventListener('resize', resizeCanvas, { passive: true });
+
+  /* ── DARK MODE TOGGLE ── */
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const savedTheme = localStorage.getItem('theme');
+  const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  if (currentTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+    themeToggle.textContent = '☀️';
+  } else {
+    html.removeAttribute('data-theme');
+    themeToggle.textContent = '🌙';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      themeToggle.textContent = '🌙';
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      themeToggle.textContent = '☀️';
+    }
+  });
 
 </script>
 </body>
